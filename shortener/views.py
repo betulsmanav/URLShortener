@@ -4,6 +4,7 @@ from django.views import View
 from django.conf import settings
 from .serializers import (
     UrlSerializer,
+    # ListSerializer
     )
 from shortener.models import Url
 
@@ -16,6 +17,7 @@ class UrlListAPIView(generics.ListAPIView):
 class UrlCreateAPIView(generics.CreateAPIView):
     serializer_class=UrlSerializer
 
+
 class UrlRedirect(View):
     def get(self,request,shortener,*args, **kwargs):
         shortener=settings.HOST_URL + "/" + self.kwargs['shortener']
@@ -25,24 +27,23 @@ class UrlRedirect(View):
 
 
 
-
-
-
-
-
-
-# class UrlModelView(viewsets.ModelViewSet):
-
+# class ListCreateAPIView(generics.CreateAPIView):
+#     serializer_class=ListSerializer
+# class ListAPIView(generics.ListAPIView):
 #     queryset=Url.objects.all()
-#     serializer_class=UrlSerializer
-#     permission_classes=(permissions.IsAuthenticated,)
-#     lookup_field='short_url'
+#     serializer_class=ListSerializer
+# class LinkRedirect(View):
+#     def get(self,request,shortener_link,*args, **kwargs):
+#         shortener_link=settings.HOST_URL + "/" + self.kwargs['shortener_link']
+#         redirect_link=Url.objects.filter(short_link=shortener_link).first().original_link
+#         return redirect(redirect_link)
 
 
 
 
-    
 
 
 
-   
+
+
+

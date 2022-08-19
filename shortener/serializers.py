@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from shortener.models import Url
+from shortener.models import (
+    Url,
+    # UrlList
+    )
 
 class UrlSerializer(serializers.ModelSerializer):
 
@@ -9,6 +12,16 @@ class UrlSerializer(serializers.ModelSerializer):
 
 
 
+# class ListSerializer(serializers.ModelSerializer):
+#     original_link=serializers.ListField(
+#         child=serializers.CharField(),initial = []
+#     )
+#     short_link=serializers.ListField(
+#         child=serializers.CharField(),initial = []
+#     )
+#     class Meta:
+#         model=UrlList
+#         fields=('original_link','short_link')
 
 
 
@@ -20,11 +33,9 @@ class UrlSerializer(serializers.ModelSerializer):
 
 
 
-# import uuid
-    # def create(self,validated_data):
-    #     uid=str(uuid.uuid4())[:5]
-    #     link=Url.objects.create(**validated_data,short_url=uid)
-    #     link.save()
-    #     return link
+
+
+
+
 
 
