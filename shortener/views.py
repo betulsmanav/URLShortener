@@ -12,10 +12,12 @@ from shortener.models import Url
 class UrlListAPIView(generics.ListAPIView):
     queryset=Url.objects.all()
     serializer_class=UrlSerializer
+    permission_classes=(permissions.IsAuthenticated,)
 
 
 class UrlCreateAPIView(generics.CreateAPIView):
     serializer_class=UrlSerializer
+    permission_classes=(permissions.IsAuthenticated,)
 
 
 class UrlRedirect(View):
