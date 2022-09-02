@@ -1,24 +1,30 @@
 from rest_framework import generics,permissions
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
+
 from django.views import View
 from django.conf import settings
 from .serializers import (
     UrlSerializer,
-    # ListSerializer
     )
+from .permission import IsUserRead
 from shortener.models import Url
 
 
 class UrlListAPIView(generics.ListAPIView):
     queryset=Url.objects.all()
     serializer_class=UrlSerializer
-    permission_classes=(permissions.IsAuthenticated,)
+    permission_classes= (IsUserRead,)
 
 
 class UrlCreateAPIView(generics.CreateAPIView):
+    queryset=Url.objects.all()
     serializer_class=UrlSerializer
     permission_classes=(permissions.IsAuthenticated,)
 
+    
+
+    
 
 class UrlRedirect(View):
     def get(self,request,shortener,*args, **kwargs):
@@ -29,16 +35,6 @@ class UrlRedirect(View):
 
 
 
-# class ListCreateAPIView(generics.CreateAPIView):
-#     serializer_class=ListSerializer
-# class ListAPIView(generics.ListAPIView):
-#     queryset=Url.objects.all()
-#     serializer_class=ListSerializer
-# class LinkRedirect(View):
-#     def get(self,request,shortener_link,*args, **kwargs):
-#         shortener_link=settings.HOST_URL + "/" + self.kwargs['shortener_link']
-#         redirect_link=Url.objects.filter(short_link=shortener_link).first().original_link
-#         return redirect(redirect_link)
 
 
 

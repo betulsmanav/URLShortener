@@ -21,7 +21,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi 
 from shortener.views import (
     UrlRedirect,
-    # LinkRedirect,
  )
 schema_view = get_schema_view( 
     openapi.Info( 
@@ -51,7 +50,6 @@ urlpatterns = [
     path('',include('users.urls')),
     path('',include('shortener.urls')),
     path('<str:shortener>/',UrlRedirect.as_view()),
-    # path('<str:shortener_link>/',LinkRedirect.as_view()),
 ] 
 
 
