@@ -23,35 +23,54 @@ class Url(models.Model):
 
 class Log(models.Model):
     url = models.ForeignKey(Url,on_delete=models.CASCADE, default=None, null=True, editable=False)
-    # create_user = models.ForeignKey(User,on_delete=models.CASCADE, default=None, null=True, editable=False)
-    # timestamp=models.DateTimeField(auto_now_add=True)
+    create_user = models.CharField(max_length=100)
+    timestamp=models.DateTimeField(auto_now_add=True)
+    address = models.CharField(max_length=100)
+    server_name = models.CharField(max_length=100)
     browser = models.CharField(max_length=100)
+    os = models.CharField(max_length=100)
+    device_brand = models.CharField(max_length=100)
+    device_family = models.CharField(max_length=100)
+    device_model = models.CharField(max_length=100)
     
 
         
 
 
-    def gelen(request):
-        # url=
-        # path = request.path
-        # scheme = request.scheme
-        # method = request.method
-        # address = request.META['REMOTE_ADDR']
-        user_agent = request.META['HTTP_USER_AGENT']
-        parsed_string = user_agent_parser.Parse(user_agent)
-        browser=user_agent_parser.ParseUserAgent(user_agent)['family']
-        print("====================",browser)
-        print("+++++++++++",parsed_string)
+    def log_data(request):
+        
+        user = request.META['REMOTE_USER']
+        address = request.META['REMOTE_ADDR']
+        server_name=request.META['SERVER_NAME']
+        ua_string = request.META['HTTP_USER_AGENT']
+        browser=user_agent_parser.ParseUserAgent(ua_string)['family']
+        operating_sistem = user_agent_parser.ParseOS(ua_string)['family']
+        device_brand = user_agent_parser.ParseDevice(ua_string)['brand']
+        device_family = user_agent_parser.ParseDevice(ua_string)['family']
+        device_model = user_agent_parser.ParseDevice(ua_string)['model']
+     
 
         log = Log(
-            browser=browser
+            create_user=user,
+            address=address,
+            server_name=server_name,
+            browser=browser,
+            os=operating_sistem,
+            device_brand=device_brand,
+            device_family=device_family,
+            device_model=device_model,
         )
 
         return log
 
     def save(self,*args, **kwargs):
-        browser=self.gelen()
-        self.browser=browser
+        log=self.log_data()
+        self.address=log.address
+        self.browser=log.browser
+        self.operating_sistem=log.operating_sistem
+        self.device_brand=log.device_brand
+        self.device_family=log.device_family
+        self.device_model=log.device_model
        
         return super().save(*args, **kwargs)
 
